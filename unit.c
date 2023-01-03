@@ -1293,16 +1293,6 @@ int unit_skilluse_id2(struct block_list *src, int target_id, uint16 skill_id, ui
 						return 0;
 				}
 				break;
-			case BOR_PUNG08:
-				if (sc && sc->data[SC_BLADESTOP]) {
-					if ((target = map->id2bl(sc->data[SC_BLADESTOP]->val4)) == NULL)
-						return 0;
-				}
-				else if (sc && sc->data[SC_NARA_03]) {
-					if ((target = map->id2bl(sc->data[SC_NARA_03]->val4)) == NULL)
-						return 0;
-				}
-				break;
 			case WE_MALE:
 			case WE_FEMALE:
 			{
@@ -1375,6 +1365,7 @@ int unit_skilluse_id2(struct block_list *src, int target_id, uint16 skill_id, ui
 		switch( skill_id ) {
 			case NPC_WIDESOULDRAIN:
 			case PR_REDEMPTIO:
+			case BOR_MEDICINA01:
 			case ALL_RESURRECTION:
 			case WM_DEADHILLHERE:
 				break;
@@ -1419,7 +1410,6 @@ int unit_skilluse_id2(struct block_list *src, int target_id, uint16 skill_id, ui
 				sd->skill_id_old = skill_id;
 				sd->skill_lv_old = skill_lv;
 				break;
-			case BOR_NARA_01:
 			case RL_C_MARKER: {
 					uint8 i = 0;
 
@@ -1513,6 +1503,12 @@ int unit_skilluse_id2(struct block_list *src, int target_id, uint16 skill_id, ui
 		} else if (!status->isdead(target))
 			return 0; //Can't cast on non-dead characters.
 	break;
+	case BOR_MEDICINA01:
+		if(battle->check_undead(tstatus->race,tstatus->def_ele)) {
+			temp = 1;
+		} else if (!status->isdead(target))
+			return 0; //Can't cast on non-dead characters.
+	break;
 	case MO_FINGEROFFENSIVE:
 		if(sd)
 			casttime += casttime * min(skill_lv, sd->spiritball);
@@ -1520,9 +1516,6 @@ int unit_skilluse_id2(struct block_list *src, int target_id, uint16 skill_id, ui
 	case MO_EXTREMITYFIST:
 		if (sc && sc->data[SC_COMBOATTACK] &&
 		   (sc->data[SC_COMBOATTACK]->val1 == MO_COMBOFINISH ||
-			sc->data[SC_COMBOATTACK]->val1 == BOR_PUNG16 ||
-			sc->data[SC_COMBOATTACK]->val1 == BOR_PUNG32 ||
-			sc->data[SC_COMBOATTACK]->val1 == BOR_PUNG64 ||
 			sc->data[SC_COMBOATTACK]->val1 == CH_TIGERFIST ||
 			sc->data[SC_COMBOATTACK]->val1 == CH_CHAINCRUSH))
 			casttime = -1;
