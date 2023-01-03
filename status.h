@@ -897,7 +897,7 @@ typedef enum sc_type {
 	SC_SUITON02,
 	SC_SUITON03,
 	SC_SUITON04,
-	SC_MEDICINA02,
+	SC_FIREWALL,
 	SC_NARA,
 	SC_NARA_03_WAIT,
 	SC_NARA_03,
@@ -940,6 +940,7 @@ typedef enum sc_type {
 	SC_BAIKANOJUTSU_AMARELA,
 	SC_BAIKANOJUTSU_VERMELHA,
 		SC_CU,
+	SC_GENTLETOUCH_CURE,
 
 #ifndef SC_MAX
 		SC_MAX, //Automatically updated max, used in for's to check we are within bounds.
@@ -1057,7 +1058,7 @@ typedef enum si_type {
 	//SI_STATUSONE                           = 102,
 	SI_AURABLADE                             = 103,
 	SI_PARRYING                              = 104,
-	SI_LKCONCENTRATION                       = 105,
+	//SI_LKCONCENTRATION                       = 105,
 	SI_TENSIONRELAX                          = 106,
 	SI_BERSERK                               = 107,
 	//SI_SACRIFICE                           = 108,
@@ -1384,7 +1385,7 @@ typedef enum si_type {
 	SI_POPECOOKIE                            = 423,
 	SI_FALLENEMPIRE                          = 424,
 	SI_GENTLETOUCH_ENERGYGAIN                = 425,
-	SI_GENTLETOUCH_CHANGE                    = 426,
+	//SI_GENTLETOUCH_CHANGE                    = 426,
 	SI_GENTLETOUCH_REVITALIZE                = 427,
 	SI_BLOODYLUST                            = 428,
 	SI_SWINGDANCE                            = 429,
@@ -2009,6 +2010,14 @@ typedef enum si_type {
 	SI_FUIN_08								 = 2035,
 	SI_CU									 = 2036,
 	SI_BYAKUGAN								 = 2037,
+	SI_SHARINGAN05								 = 2038,
+	SI_SHARINGAN06								 = 2039,
+	SI_MSSAPO								 = 2040,
+	SI_MSCOBRA								 = 2041,
+	SI_BAIKANOJUTSU								 = 2042,
+	SI_GENTLETOUCH_CURE								 = 2043,
+	SI_GENTLETOUCH_CHANGE								 = 2044,
+	SI_LKCONCENTRATION								 = 2045,
 
 #ifndef SI_MAX
 		SI_MAX,

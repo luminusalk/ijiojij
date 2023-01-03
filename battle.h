@@ -801,12 +801,6 @@ struct Battle_Config {
 	double cegueira_balance;
 	double hipotermia_balance;
 
-	//medicina
-	int cura_balance;
-	int cura_time;
-	int santuario_cura_balance;
-	int cura_all_balance;
-
 	//sistema de evolução
 	int doujutsu_sharigan_item_nv1;
 	int doujutsu_sharigan_item_nv2;
@@ -1040,6 +1034,38 @@ struct Battle_Config {
 
 	int doton_02_hateffect_area;
 	int doton_02_hateffectid;
+
+	int bijuu_01_id;
+	int bijuu_02_id;
+	int bijuu_03_id;
+	int bijuu_04_id;
+	int bijuu_05_id;
+	int bijuu_06_id;
+	int bijuu_07_id;
+	int bijuu_08_id;
+	int bijuu_09_id;
+
+	int bijuu_01_item;
+	int bijuu_02_item;
+	int bijuu_03_item;
+	int bijuu_04_item;
+	int bijuu_05_item;
+	int bijuu_06_item;
+	int bijuu_07_item;
+	int bijuu_08_item;
+	int bijuu_09_item;
+
+	int bijuu_01_chance;
+	int bijuu_02_chance;
+	int bijuu_03_chance;
+	int bijuu_04_chance;
+	int bijuu_05_chance;
+	int bijuu_06_chance;
+	int bijuu_07_chance;
+	int bijuu_08_chance;
+	int bijuu_09_chance;
+
+	double bijuu_vida;
 
 	//delay das habilidades do anti-macro definidas no arquivo delay.conf [pedrodks]
 	//Espadachim
@@ -1333,6 +1359,7 @@ struct Battle_Config {
 	int d_BA_PVERDE;
 	int d_BA_PAMARELA;
 	int d_BA_PVERMELHA;
+	int d_BOR_CHOUJI_01;
 	int d_PC_PORTAO01;
 	int d_PC_PORTAO02;
 	int d_PC_PORTAO03;
@@ -1366,11 +1393,6 @@ struct Battle_Config {
 	int d_BOR_KUCHYKUGUTSU02;
 	int d_BOR_KUCHYKUGUTSU03;
 	int d_BOR_BYAKUGAN;
-	int d_BOR_PUNG04;
-	int d_BOR_PUNG08;
-	int d_BOR_PUNG16;
-	int d_BOR_PUNG32;
-	int d_BOR_PUNG64;
 	int d_BOR_ROKUJUYON;
 	int d_BOR_8TRIG;
 	int d_BOR_HIJUTSU;
@@ -1400,14 +1422,11 @@ struct Battle_Config {
 	int d_BOR_KATON04;
 	int d_BOR_KATON05;
 	int d_BOR_MEDICINA01;
-	int d_BOR_MEDICINA02;
 	int d_BOR_TERREMOTO;
 	int d_BOR_RELAMPAGO;
 	int d_BOR_RAITON_F;
 	int d_BOR_SUITON05;
 	int d_BOR_DOTON01;
-	int d_BOR_NARA_01;
-	int d_BOR_NARA_02;
 	int d_BOR_NARA_03;
 	int d_BOR_NARA_04;
 	int d_BOR_NARA_05;

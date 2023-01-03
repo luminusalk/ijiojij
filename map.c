@@ -3056,7 +3056,6 @@ void map_setcell(int16 m, int16 x, int16 y, cell_t cell, bool flag) {
 	case CELL_WALKABLE:      map->list[m].cell[j].walkable = flag;      break;
 	case CELL_SHOOTABLE:     map->list[m].cell[j].shootable = flag;     break;
 	case CELL_WATER:         map->list[m].cell[j].water = flag;         break;
-
 	case CELL_NPC:           map->list[m].cell[j].npc = flag;           break;
 	case CELL_BASILICA:      map->list[m].cell[j].basilica = flag;      break;
 	case CELL_LANDPROTECTOR: map->list[m].cell[j].landprotector = flag; break;

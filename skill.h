@@ -1082,10 +1082,10 @@ enum e_skill {
 	BOR_RELAMPAGO,
 	BOR_RAITON_F,
 	BOR_SUITON05,//Suiton - Suikotopa Bandai
-	BOR_DOTON01,//Doton - Shirinchichu
-	BOR_NARA_01,//estrangulamento das sombras
-	BOR_NARA_02,//prisao das sombras
-	BOR_NARA_03,//Kage Shibari no Jutsu
+	BOR_DOTON01,//Doton - Shirinchichu,
+	BOR_DOTON02,
+	BOR_DOTON03,
+	BOR_NARA_03,//Kage Shibari no Jutsu = 989,
 	BOR_NARA_04,//Kagemane no jutsu #1
 	BOR_NARA_05,//Kagemane no jutsu #2
 	BOR_NARA_06,//Kagemane no jutsu #3
@@ -1114,24 +1114,24 @@ enum e_skill {
 	BOR_GBUFF01,
 	BOR_GBUFF02,
 	BOR_GEN_03,
-	BOR_KAGEBUSHIN,
 	BOR_AMATERASU,
 	BOR_CHOUJI_01,
 	BOR_BYAK_ENC,
-	BOR_FUIN_01,
-	BOR_FUIN_02,
-	BOR_FUIN_03,
-	BOR_FUIN_04,
-	BOR_FUIN_05,
-	BOR_FUIN_06,
-	BOR_FUIN_07,
-	BOR_FUIN_08,
-	BOR_BYAK_TRAINING = 1052,
+	BOR_BYAK_TRAINING,
 	BOR_BAIKA_TRAINING,
 	BOR_PORTOES_TRAINING,
 	BOR_HYOTON_TRAINING,
 	BOR_NARA_TRAINING,
 	BOR_SHARIN_TRAINING,
+	BOR_CAPTUREBIJUU,
+	BOR_FUIN_01,
+	BOR_FUIN_02,
+	BOR_FUIN_03,
+	BOR_FUIN_04 = 1052,
+	BOR_FUIN_05,
+	BOR_FUIN_06,
+	BOR_FUIN_07,
+	BOR_FUIN_08,
 	KN_CHARGEATK = 1001,
 	CR_SHRINK,
 	AS_SONICACCEL,
@@ -1722,6 +1722,7 @@ enum {
 	UNT_WARP_ACTIVE,
 	UNT_BENEDICTIO, //TODO
 	UNT_SANCTUARY,
+	UNT_DOTON03,
 	UNT_MAGNUS,
 	UNT_PNEUMA,
 	UNT_DUMMYSKILL, //These show no effect on the client
@@ -1910,7 +1911,7 @@ struct s_skill_db {
 	int upkeep_time[MAX_SKILL_LEVEL],upkeep_time2[MAX_SKILL_LEVEL],cooldown[MAX_SKILL_LEVEL];
 	//pedrodks
 	//sistema de hateffect em skills
-	int hateffect_id[MAX_SKILL_LEVEL], hateffect_duration[MAX_SKILL_LEVEL], hateffect_area[MAX_SKILL_LEVEL];
+	int hateffect_id[MAX_SKILL_LEVEL], hateffect_duration[MAX_SKILL_LEVEL], hateffect_area[MAX_SKILL_LEVEL], hateffect_dmgalcance[MAX_SKILL_LEVEL];
 	int castcancel,cast_def_rate;
 	int inf2,maxcount[MAX_SKILL_LEVEL],skill_type;
 	int blewcount[MAX_SKILL_LEVEL];
@@ -2169,6 +2170,7 @@ int (*get_index) (int skill_id);
 	int (*get_hateffect_id) (int skill_id, int skill_lv);
 	int (*get_hateffect_duration) (int skill_id, int skill_lv);
 	int (*get_hateffect_area) (int skill_id, int skill_lv);
+	int (*get_hateffect_dmgalcance) (int skill_id, int skill_lv);
 
 	//sistema de balanceamento de skills
 	//pedrodks
@@ -2276,6 +2278,7 @@ int (*get_index) (int skill_id);
 	int (*dance_overlap) (struct skill_unit* su, int flag);
 	struct s_skill_unit_layout *(*get_unit_layout) (uint16 skill_id, uint16 skill_lv, struct block_list* src, int x, int y);
 	int (*frostjoke_scream) (struct block_list *bl, va_list ap);
+	int (*hateffect_areadmg) (struct block_list* bl, va_list ap);
 	int (*greed) (struct block_list *bl, va_list ap);
 	int (*destroy_trap) ( struct block_list *bl, va_list ap );
 	struct skill_unit_group_tickset *(*unitgrouptickset_search) (struct block_list *bl, struct skill_unit_group *group, int64 tick);
@@ -2372,8 +2375,10 @@ int (*get_index) (int skill_id);
 	int (*check_npc_chaospanic) (struct block_list *bl, va_list args);
 	int (*count_wos) (struct block_list *bl, va_list ap);
 	int (*vending) ( struct map_session_data *sd, int nameid);
-	int (*hateffect) (struct block_list* bl, uint16 skill_id, uint16 skill_lv, bool area);
-	int (*eventtimer) (int tid, int64 tick, int id, intptr_t data);
+	int (*hateffect) (struct block_list* src, struct block_list* dst, uint16 skill_id, uint16 skill_lv, int x, int y, int64 tick, int mode);
+	int (*sechateffect) (struct block_list* bl, uint16 skill_id);
+	int (*eventtimer_area) (int tid, int64 tick, int id, intptr_t data);
+	int (*eventtimer_self) (int tid, int64 tick, int id, intptr_t data);
 };
 
 struct skill_interface *skill;

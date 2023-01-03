@@ -5935,9 +5935,6 @@ int clif_skill_damage(struct block_list *src, struct block_list *dst, int64 tick
 	} else {
 		WBUFL(buf, 24) = damage;
 	}
-	if (skill->get_hateffect_area(skill_id, skill_lv) == 2 && mobid == 2337) {
-		WBUFL(buf, 24) = 0;
-	}
 	WBUFW(buf, 28) = skill_lv;
 	WBUFW(buf, 30) = div;
 	// For some reason, late 2013 and newer clients have
@@ -5969,12 +5966,11 @@ int clif_skill_damage(struct block_list *src, struct block_list *dst, int64 tick
 
 #endif
 
-	if (skill->get_hateffect_id(skill_id, skill_lv) > 0 && skill->get_hateffect_area(skill_id, skill_lv) == 0) {
-		skill->hateffect(dst, skill_id, skill_lv, false);
-	}
-	else if (skill->get_hateffect_id(skill_id, 1) > 0 && skill->get_hateffect_area(skill_id, 1) == 4) {
-		skill->hateffect(src, skill_id, 1, false);
-	}
+	printf("clif 02 \n");
+
+	//if (skill->get_hateffect_id(skill_id, 1) > 0) {
+	//	skill->hateffect(src, dst, skill_id, 1, 0, 0, 0, skill->get_hateffect_area(skill_id, 1));
+	//}
 
 	//Because the damage delay must be synced with the client, here is where the can-walk tick must be updated. [Skotlex]
 	return clif->calc_walkdelay(dst, ddelay, type, damage, div);
@@ -6079,12 +6075,11 @@ int clif_skill_nodamage(struct block_list *src, struct block_list *dst, uint16 s
 		clif->send(buf, len, src, SELF);
 	}
 
-	if (skill->get_hateffect_id(skill_id, 1) > 0 && skill->get_hateffect_area(skill_id, 1) == 1) {
-		skill->hateffect(dst, skill_id, 1, false);
-	}
-	else if (skill->get_hateffect_id(skill_id, 1) > 0 && skill->get_hateffect_area(skill_id, 1) == 3) {
-		skill->hateffect(src, skill_id, 1, false);
-	}
+	printf("clif 03 \n");
+
+	//if (skill->get_hateffect_id(skill_id, 1) > 0) {
+	//	skill->hateffect(src, dst, skill_id, 1, 0, 0, 0, skill->get_hateffect_area(skill_id, 1));
+	//}
 
 	return fail;
 }
@@ -6110,21 +6105,11 @@ void clif_skill_poseffect(struct block_list *src, struct block_list* dst, uint16
 	else {
 		clif->send(buf, packet_len(0x117), src, AREA);
 	}
-	if (skill->get_hateffect_id(skill_id, 1) > 0 && skill->get_hateffect_area(skill_id, 1) == 2) {
-		struct mob_data* summon_md;
+	printf("clif 01 \n");
 
-		int class_ = 2337;
-		summon_md = mob->once_spawn_sub(src, src->m, x, y, " ", class_, "", SZ_SMALL, AI_NONE);
-		if (summon_md) {
-			if (summon_md->deletetimer != INVALID_TIMER)
-				timer->delete(summon_md->deletetimer, mob->timer_delete);
-			summon_md->deletetimer = timer->add(timer->gettick() + skill->get_hateffect_duration(skill_id, 1), mob->timer_delete, summon_md->bl.id, 0);
-			summon_md->sc.option = OPTION_INVISIBLE;
-			summon_md->Hateffectmob = true;
-			mob->spawn(summon_md);
-		}
-		skill->hateffect(&summon_md->bl, skill_id, 1, true);
-	}
+	//if (skill->get_hateffect_id(skill_id, 1) > 0) {
+	//	skill->hateffect(src, dst, skill_id, 1, x, y, tick, skill->get_hateffect_area(skill_id, 1));
+	//}
 }
 
 /// Presents a list of available warp destinations (ZC_WARPLIST).
@@ -9696,7 +9681,7 @@ void clif_charnameack (int fd, struct block_list *bl)
 				packet.title_id = ssd->status.title_id;
 			}
 #endif
-			if (battle_config.ranked_system_ativado)
+			if (battle_config.ranked_system_ativado != 0)
 				memcpy(packet.name, clif->bor_pvp_rank(ssd, name_pvp), NAME_LENGTH);
 			else
 				memcpy(packet.name, ssd->status.name, NAME_LENGTH);
@@ -9842,7 +9827,7 @@ void clif_charnameupdate (struct map_session_data *ssd)
 	packet.packet_id = reqNameAllType;
 	packet.gid = ssd->bl.id;
 
-	if (battle_config.ranked_system_ativado)
+	if (battle_config.ranked_system_ativado != 0)
 		memcpy(packet.name, clif->bor_pvp_rank(ssd, name_pvp), NAME_LENGTH);
 	else
 		memcpy(packet.name, ssd->status.name, NAME_LENGTH);
@@ -13545,7 +13530,10 @@ void clif_parse_CreateParty(int fd, struct map_session_data *sd)
 {
 	char name[NAME_LENGTH];
 
-	safestrncpy(name, RFIFOP(fd, 2), NAME_LENGTH);
+	if (battle_config.ranked_system_ativado != 0)
+		safestrncpy(name, clif->bor_pvp_rank(sd, name), NAME_LENGTH);
+	else
+		safestrncpy(name, RFIFOP(fd, 2), NAME_LENGTH);
 
 	if( map->list[sd->bl.m].flag.partylock ) {
 		// Party locked.
@@ -13609,9 +13597,19 @@ void clif_parse_PartyInvite2(int fd, struct map_session_data *sd) __attribute__(
 void clif_parse_PartyInvite2(int fd, struct map_session_data *sd)
 {
 	struct map_session_data *t_sd;
+	int i = 0;
 	char name[NAME_LENGTH];
 
 	safestrncpy(name, RFIFOP(fd, 2), NAME_LENGTH);
+
+	if (battle_config.ranked_system_ativado != 0)
+	{
+		while (i != 4)
+		{
+			memmove(&name[0], &name[0 + 1], strlen(name) - 0);
+			i++;
+		}
+	}
 
 	if(map->list[sd->bl.m].flag.partylock) {
 		// Party locked.
@@ -16405,6 +16403,7 @@ void clif_parse_AutoRevive(int fd, struct map_session_data *sd) {
 		pc->delitem(sd, item_position, 1, 0, DELITEM_SKILLUSE);
 	}
 	clif->skill_nodamage(&sd->bl,&sd->bl,ALL_RESURRECTION,4,1);
+	clif->skill_nodamage(&sd->bl,&sd->bl,BOR_MEDICINA01,4,1);
 }
 
 /// Information about character's status values (ZC_ACK_STATUS_GM).

@@ -7843,7 +7843,6 @@ int pc_allskillup(struct map_session_data *sd)
 			switch( skill->dbs->db[i].nameid ) {
 				case SG_DEVIL:
 				case MO_TRIPLEATTACK:
-				case BOR_PUNG04:
 				case RG_SNATCHER:
 					continue;
 				default:
@@ -8232,6 +8231,10 @@ int pc_skillheal_bonus(struct map_session_data *sd, uint16 skill_id)
 				bonus = 0;
 			break;
 		case PR_SANCTUARY:
+			if ((battle_config.skill_add_heal_rate & 2) == 0)
+				bonus = 0;
+			break;
+		case BOR_DOTON03:
 			if ((battle_config.skill_add_heal_rate & 2) == 0)
 				bonus = 0;
 			break;
